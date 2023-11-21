@@ -9,6 +9,9 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 50px;
+            background: url('your.jpg') no-repeat center center fixed;
+            background-size: cover;
+            opacity: 0.9; /* 배경 사진의 투명도 조절 */
         }
         .center-container {
             display: flex;
@@ -20,6 +23,9 @@
             display: grid;
             grid-template-columns: repeat(10, 40px);
             gap: 5px;
+            background-color: rgba(255, 255, 255, 0.7); /* 그리드의 배경색 및 투명도 조절 */
+            padding: 10px;
+            border-radius: 10px;
         }
         .grid-item {
             border: 1px solid #ddd;
@@ -102,7 +108,7 @@
             card.classList.add('flipped');
 
             // 당첨 여부 확인 (5% 확률)
-            var 당첨 = 당첨숫자들.length < 5 && Math.random() < 0.05;
+            var 당첨 = 당첨숫자들.length < 5 && (Math.random() < 0.05 || (100 - 선택된칸들.length) < (5 - 당첨숫자들.length));
 
             // 당첨 숫자 추가
             if (당첨) {
