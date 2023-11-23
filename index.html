@@ -11,7 +11,7 @@
             margin-top: 15px;
            
             background-color: transparent;
-            
+                        
             align-items: center;
             justify-content: center;
             
@@ -26,7 +26,7 @@
             height: 40px;
             width: 365px;
             background-color: #89c;
-            font-size: 18px;
+            font-size: 17px;
             opacity: 0.8; /* 배경 사진의 투명도 조절 */
             border-radius: 10px;
 
@@ -49,15 +49,15 @@
 			align-items: center;
             justify-content: center;
             border-radius: 10px;
-            background: url('your.jpg') ;
+background: url('your.jpg') ;
             background-size: cover;
-            opacity: 0.9; /* 배경 사진의 투명도 조절 */
+            opacity: 0.8; /* 배경 사진의 투명도 조절 */
         }
         .grid-item {
             border: 1px solid #ddd;
             width: 30px;
             height: 30px;
-            font-size: 18px;
+            font-size: 17px;
             cursor: pointer;
             display: flex;
             align-items: top;
@@ -65,7 +65,7 @@
             position: relative;
             perspective: 1000px; /* 3D 효과를 위한 값 설정 */
             overflow: hidden;
-            opacity: 0.7; /* 배경 사진의 투명도 조절 */
+            opacity: 0.9; /* 배경 사진의 투명도 조절 */
         }
         .card {
             width: 100%;
@@ -96,11 +96,11 @@
         }
         .back {
             transform: rotateY(180deg);
-            color: #333;
+            color: black;
             visibility: hidden; /* 결과를 가리고 있던 부분을 보이도록 수정 */
         }
         .back.loser {
-            background-color: lightgray;
+            background-color: #2e9;
             visibility: visible; /* 꽝인 경우에도 결과가 보이도록 수정 */
         }
         .back.winner {
