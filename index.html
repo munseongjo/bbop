@@ -8,33 +8,53 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 50px;
+            margin-top: 15px;
             background: url('your.jpg') no-repeat center center fixed;
             background-size: cover;
             opacity: 0.9; /* 배경 사진의 투명도 조절 */
+            align-items: center;
+            justify-content: center;
+
+
+        }
+		.high {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            background-color: #c9c;
+            font-size: 14px;
+            opacity: 0.8; /* 배경 사진의 투명도 조절 */
+            border-radius: 10px;
+
+
+
         }
         .center-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            height: 382px;
+
         }
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(10, 40px);
+            grid-template-columns: repeat(10, 30px);
             gap: 5px;
             background-color: rgba(255, 255, 255, 0.7); /* 그리드의 배경색 및 투명도 조절 */
             padding: 10px;
+			align-items: center;
+            justify-content: center;
             border-radius: 10px;
         }
         .grid-item {
             border: 1px solid #ddd;
-            width: 40px;
-            height: 40px;
-            font-size: 16px;
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
             cursor: pointer;
             display: flex;
-            align-items: center;
+            align-items: top;
             justify-content: center;
             position: relative;
             perspective: 1000px; /* 3D 효과를 위한 값 설정 */
@@ -83,6 +103,7 @@
     </style>
 </head>
 <body>
+    <div class="high">1개-역팬(1), 2개-역팬(10), 3개-역팬(100),<br>4개-사다리(1000), 5개-사다리(2000)</div>
     <div class="center-container">
         <div class="grid-container" id="gridContainer"></div>
     </div>
@@ -126,9 +147,7 @@
                 playSound('lose.mp3'); // 꽝 효과음
             }
 
-            // 결과를 HTML에 표시
-            var 결과문자열 = 당첨숫자들.length === 5 ? "당첨!" : "계속 뽑기 중...";
-            document.getElementById("result").innerHTML = 결과문자열;
+
 
             // 당첨 숫자가 5개가 되면 더 이상 뽑기를 허용하지 않음
             if (당첨숫자들.length === 5) {
