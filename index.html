@@ -24,7 +24,7 @@
             justify-content: center;
             margin: 0 auto;
             height: 50px;
-            width: 365px;
+            width: 380px;
             background-color: #89c;
 			letter-spacing: -1px;
             font-size: 20px;
@@ -45,13 +45,14 @@
             display: grid;
             grid-template-columns: repeat(6, 57px);
             gap: 3px;
-            background-color: rgba(255, 255, 255, 0.7); /* 그리드의 배경색 및 투명도 조절 */
+ //           background-color: rgba(255, 255, 255, 0.7); /* 그리드의 배경색 및 투명도 조절 */
             padding: 10px;
 			align-items: center;
             justify-content: center;
             border-radius: 10px;
-background: url('') ;
+background: url('20231129_153002.png') ;
             background-size: cover;
+			position: relative;
             opacity: 0.9; /* 배경 사진의 투명도 조절 */
         }
         .grid-item {
@@ -66,9 +67,10 @@ background: url('') ;
             position: relative;
             perspective: 1000px; /* 3D 효과를 위한 값 설정 */
             overflow: hidden;
-            opacity: 0.9; /* 배경 사진의 투명도 조절 */
+            opacity: 1.0; /* 배경 사진의 투명도 조절 */
             word-break: keep-all;
         }
+
         .card {
             width: 100%;
             height: 100%;
@@ -77,9 +79,13 @@ background: url('') ;
             transition: transform 0.5s ease-in-out;
             align-items: center;
             justify-content: center;
+            background-color: transparent;			
+            opacity: 1.0; /* 배경 사진의 투명도 조절 */
+
         }
         .card.flipped {
             transform: rotateY(180deg);
+            opacity: 1.0; /* 배경 사진의 투명도 조절 */
         }
         .front, .back {
             width: 100%;
@@ -89,12 +95,14 @@ background: url('') ;
             display: flex;
             align-items: center;
             justify-content: center;
+            opacity: 1.0; /* 배경 사진의 투명도 조절 */
         }
         .front {
-            background-color: lightblue; /* 당첨인 경우 배경색을 연한 하늘색으로 설정 */
+            background-color: transparent; /* 당첨인 경우 배경색을 연한 하늘색으로 설정 */
             display: flex;
             align-items: center;
             justify-content: center;
+
         }
         .back {
             transform: rotateY(180deg);
