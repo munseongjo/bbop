@@ -10,7 +10,7 @@
             text-align: center;
             margin-top: 18px;
            
-            background-color: transparent;
+            background-color: transparent;			
                         
             align-items: center;
             justify-content: center;
@@ -23,10 +23,11 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto;
-            height: 40px;
+            height: 50px;
             width: 365px;
             background-color: #89c;
-            font-size: 16px;
+			letter-spacing: -1px;
+            font-size: 20px;
             opacity: 0.8; /* 배경 사진의 투명도 조절 */
             border-radius: 10px;
 
@@ -42,8 +43,8 @@
         }
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(10, 30px);
-            gap: 5px;
+            grid-template-columns: repeat(6, 57px);
+            gap: 3px;
             background-color: rgba(255, 255, 255, 0.7); /* 그리드의 배경색 및 투명도 조절 */
             padding: 10px;
 			align-items: center;
@@ -55,9 +56,9 @@ background: url('') ;
         }
         .grid-item {
             border: 1px solid #ddd;
-            width: 30px;
-            height: 30px;
-            font-size: 20px;
+            width: 55px;
+            height: 55px;
+            font-size: 24px;
             cursor: pointer;
             display: flex;
             align-items: top;
@@ -111,38 +112,53 @@ background: url('') ;
     </style>
 </head>
 <body>
-    <div class="high">1개-역팬(10), 2개-역팬(50), 3개-사다리(1000),<br>4개-사다리(2000), 5개-꽝없는사다리</div>
+    <div class="high"> 🧡 100개 뽑기 🧡 <br> 1개-역팬(1), 2개-사다리(1000), 3개-방셀</div>
     <div class="center-container">
         <div class="grid-container" id="gridContainer"></div>
     </div>
     <p id="result"></p>
 
     <script>
+
+//    const client_Id = ''; 
+//    const clientSecret = '';
+//    const redirectUri = '';
+
+    // 사용자가 허용한 범위(scope)
+//    const scope = '';
+
+    // 인증 서버의 URL
+//    const authorizationEndpoint = '';
+//    const tokenEndpoint = '';
+
+    // 사용자를 인증 서버로 리다이렉트
+//    window.location.href = `${authorizationEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
+
         var 당첨숫자들 = []; // 당첨 숫자를 저장하는 배열
         var 선택된칸들 = []; // 선택된 칸을 저장하는 배열
   // 실시간 별풍선 갯수를 가져오는 함수
-//const getStarballoonCount = async () => {
-//    const response = await fetch(`https://openapi.afreecatv.com/v2/channels/249329970/events/starballoon`);
+// const getStarballoonCount = async () => {
+//    const response = await fetch(`https://cors-anywhere.herokuapp.com/https://openapi.afreecatv.com/broad/info/update`);
 //    const data = await response.json();
 //    return data.data.count;
 //};
         // 별풍선 갯수에 따라 해당 번호의 셀을 뽑는 함수
-  //      async function 별풍선으로뽑기() {
-  //          const 별풍선갯수 = await getStarballoonCount();
-   //         const 뽑을번호 = 별풍선갯수; // 별풍선 갯수에 해당하는 번호 뽑기
-   //         await 칸클릭(뽑을번호); // 뽑기 함수 호출
-   //         await sleep(1000); // 1초 쉬기
-  //      }
+//      async function 별풍선으로뽑기() {
+//          const 별풍선갯수 = await getStarballoonCount();
+//         const 뽑을번호 = 별풍선갯수; // 별풍선 갯수에 해당하는 번호 뽑기
+//        await 칸클릭(뽑을번호); // 뽑기 함수 호출
+//         await sleep(1000); // 1초 쉬기
+//      }
 
 
 // 일정 시간 동안 코드 실행을 일시 정지하는 함수
 //function sleep(ms) {
- //   return new Promise(resolve => setTimeout(resolve, ms));
+//  return new Promise(resolve => setTimeout(resolve, ms));
 //}
 //api로 별풍선 갯수 읽어오기
 //        setInterval(async function () {
- //           await 별풍선으로뽑기();
- //       }, 1000);
+//           await 별풍선으로뽑기();
+//       }, 1000);
 // test
 //setInterval(async function () {
 //    const 별풍선갯수 = window.테스트별풍선갯수 || (await getStarballoonCount()).data.count;
@@ -173,7 +189,7 @@ background: url('') ;
             card.classList.add('flipped');
 
             // 당첨 여부 확인 (5% 확률)
-            var 당첨 = 당첨숫자들.length < 5 && (Math.random() < 0.05 || (100 - 선택된칸들.length) < (5 - 당첨숫자들.length));
+            var 당첨 = 당첨숫자들.length < 3 && (Math.random() < 0.08 || (36 - 선택된칸들.length) < (3 - 당첨숫자들.length));
 
             // 당첨 숫자 추가
             if (당첨) {
@@ -194,7 +210,7 @@ background: url('') ;
 
 
             // 당첨 숫자가 5개가 되면 더 이상 뽑기를 허용하지 않음
-            if (당첨숫자들.length === 5) {
+            if (당첨숫자들.length === 3) {
                 document.querySelectorAll('.grid-item').forEach(function(item) {
                     item.removeAttribute('onclick');
                 });
@@ -203,7 +219,7 @@ background: url('') ;
 
         // 10x10 그리드 생성
         var gridContainer = document.getElementById("gridContainer");
-        for (var i = 1; i <= 100; i++) {
+        for (var i = 1; i <= 36; i++) {
             var gridItem = document.createElement("div");
             gridItem.id = "gridItem_" + i;
             gridItem.className = "grid-item";
