@@ -1,215 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>슬롯머신</title>
-  <style>
-    @keyframes spin {
-      0% { transform: translateY(0px); }
-      8.33% { transform: translateY(-100px); }
-      16.67% { transform: translateY(-200px); }
-      25% { transform: translateY(-300px); }
-      33.33% { transform: translateY(-400px); }
-      41.67% { transform: translateY(-500px); }
-      50% { transform: translateY(-600px); }
-      58.33% { transform: translateY(-700px); }
-      66.67% { transform: translateY(-800px); }
-      75% { transform: translateY(-900px); }
-      83.33% { transform: translateY(-1000px); }
-      91.67% { transform: translateY(-1100px); }
-      100% { transform: translateY(-1200px); } 
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>뽑기 게임</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Gowun Dodum', serif;
+            text-align: center;
+            margin-top: 18px;
+            background-color: transparent;
+            align-items: center;
+            justify-content: center;
+        }
+        .high {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            height: 55px;
+            width: 357px;
+            background-color: #ffbfffb8;
+            letter-spacing: -2px;
+            font-size: 22px;
+            line-height: 28px;
+            color: #3a2733;
+            opacity: 0.8;
+            border-radius: 0px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
 
-    .slot {
-      width: 100px;
-      height: 100px;
-      overflow: hidden;
-      border: 1px solid #ccc;
-      position: relative;
-      margin: 0 auto;
-    }
-
-    .reel-container {
-      height: 100px;
-      overflow: hidden;
-      position: absolute;
-      bottom: 0;
-    }
-
-    .reel {
-      width: 100%;
-      height: 100%;
-      transform: translateY(0);
-    }
-
-    .reel img {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .start-button,
-    .stop-button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .slots-container {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 5px;
-    }
-  </style>
+     
+       
+        .center-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 358px;
+            margin-top: 0px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(6, 57px);
+            gap: 3px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0px;
+            background: url('your.jpg');
+            background-size: cover;
+            position: relative;
+            opacity: 0.9;
+            margin-top: 0px;
+        }
+        .grid-item {
+            border: 1px solid #ddd;
+            width: 55px;
+            height: 55px;
+            font-size: 26px;
+            cursor: pointer;
+            display: flex;
+            align-items: top;
+            justify-content: center;
+            position: relative;
+            perspective: 1000px;
+            overflow: hidden;
+            opacity: 1.0;
+            word-break: keep-all;
+        }
+        .card {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease-in-out;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            opacity: 1.0;
+        }
+        .card.flipped {
+            transform: rotateY(180deg);
+            opacity: 1.0;
+        }
+        .front, .back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1.0;
+        }
+        .front {
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .back {
+            transform: rotateY(180deg);
+            color: black;
+            visibility: hidden;
+        }
+        .back.loser {
+            background-color: #2e9;
+            visibility: visible;
+        }
+        .back.winner {
+            background-color: yellow;
+            visibility: visible;
+        }
+    </style>
 </head>
 <body>
-
-  <div class="slots-container">
-    <div class="slot" id="reel1">
-      <div class="reel-container">
-        <div class="reel">
-          <img src="1.png" alt="1">
-        </div>
-      </div>
+    <div class="high">
+        <p>
+            🧡 150개 뽑기 🧡 <br> 1개:사다리(1000), 2개:역팬(125), 3개:방셀
+             </p>
     </div>
-
-    <div class="slot" id="reel2">
-      <div class="reel-container">
-        <div class="reel">
-          <img src="1.png" alt="1">
-        </div>
-      </div>
+    <div class="center-container">
+        <div class="grid-container" id="gridContainer"></div>
     </div>
+    <p id="result"></p>
 
-    <div class="slot" id="reel3">
-      <div class="reel-container">
-        <div class="reel">
-          <img src="1.png" alt="1">
-        </div>
-      </div>
-    </div>
-  </div>
+    <script>
 
-  <!-- 시작 및 정지 버튼 및 효과음 추가 -->
-  <div class="slots-container">
-    <button class="start-button" onclick="startSpin('reel1')">시작</button>
-    <button class="stop-button" onclick="stopSpin('reel1')">정지</button>
 
-    <audio id="spinSound" src="spin_sound.mp3" loop></audio>
-  </div>
 
-  <script>
-    let isSpinning = false;
-    const reels = document.querySelectorAll('.reel');
-	const spinSound = document.getElementById('spinSound');
-    const images = [];
 
-    // 이미지 추가
-    for (let i = 1; i <= 12; i++) {
-      images.push(`${i}.png`);
-    }
+     
 
-    function randomSpeed() {
-      return Math.random() * 2.7 + 0.5; // 랜덤한 0.3~4 사이의 숫자 반환
-    }
 
-    function startSpin() {
-      if (!isSpinning) {
-	       spinSound.play();
-        reels.forEach((reel, index) => {
-          // Clear the content of each reel
-          reel.innerHTML = '';
 
-          // Add images to each reel
-          images.forEach(imgSrc => {
-            const img = document.createElement('img');
-            img.src = imgSrc;
-            img.alt = imgSrc;
-            reel.appendChild(img);
-          });
+//    const client_Id = ''; 
+//    const clientSecret = '';
+//    const redirectUri = '';
 
-          // Add an additional image to each reel
-          const additionalImg = document.createElement('img');
-          additionalImg.src = '1.png';
-          additionalImg.alt = '1';
-          reel.appendChild(additionalImg);
+    // 사용자가 허용한 범위(scope)
+//    const scope = '';
 
-          // Initialize
-          reel.innerHTML = reel.innerHTML;
+    // 인증 서버의 URL
+//    const authorizationEndpoint = '';
+//    const tokenEndpoint = '';
 
-          // Reset animation for each reel
-          reel.style.animation = 'none';
-          void reel.offsetWidth; // Trigger reflow
-          reel.style.animation = `spin ${randomSpeed()}s infinite linear`; // Use random speed
+    // 사용자를 인증 서버로 리다이렉트
+//    window.location.href = `${authorizationEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
 
-          // Start the animation for each reel
-          reel.style.animationPlayState = 'running';
-        });
+        var 당첨숫자들 = []; // 당첨 숫자를 저장하는 배열
+        var 선택된칸들 = []; // 선택된 칸을 저장하는 배열
+  // 실시간 별풍선 갯수를 가져오는 함수
+// const getStarballoonCount = async () => {
+//    const response = await fetch(`https://cors-anywhere.herokuapp.com/https://openapi.afreecatv.com/broad/info/update`);
+//    const data = await response.json();
+//    return data.data.count;
+//};
+        // 별풍선 갯수에 따라 해당 번호의 셀을 뽑는 함수
+//      async function 별풍선으로뽑기() {
+//          const 별풍선갯수 = await getStarballoonCount();
+//         const 뽑을번호 = 별풍선갯수; // 별풍선 갯수에 해당하는 번호 뽑기
+//        await 칸클릭(뽑을번호); // 뽑기 함수 호출
+//         await sleep(1000); // 1초 쉬기
+//      }
 
-        isSpinning = true;
-      }
-    }
 
-    function stopSpin() {
-      if (isSpinning) {
-	       spinSound.pause();
-        reels.forEach((reel, index) => {
-          // Pause the animation for each reel
-          reel.style.animationPlayState = 'paused';
+// 일정 시간 동안 코드 실행을 일시 정지하는 함수
+//function sleep(ms) {
+//  return new Promise(resolve => setTimeout(resolve, ms));
+//}
+//api로 별풍선 갯수 읽어오기
+//        setInterval(async function () {
+//           await 별풍선으로뽑기();
+//       }, 1000);
+// test
+//setInterval(async function () {
+//    const 별풍선갯수 = window.테스트별풍선갯수 || (await getStarballoonCount()).data.count;
+//    console.log(`별풍선 갯수: ${별풍선갯수}`);
+//    별풍선으로뽑기(별풍선갯수);
+// }, 1000);
 
-          // Get the current translation position
-          const computedStyle = window.getComputedStyle(reel);
-          const translateY = parseInt(computedStyle.transform.split(',')[5], 10);
 
-          // Find the closest 12 positions
-          let closestPosition = 0;
-          let closestDistance = Math.abs(translateY + 660);
-
-          for (let i = 1; i <= 11; i++) {
-            const position = -110 * i;
-            const distance = Math.abs(translateY - position);
-            if (distance < closestDistance) {
-              closestPosition = position;
-              closestDistance = distance;
+// 그리드 아이템 클릭 이벤트 처리
+        function 칸클릭(칸번호) {
+            // 이미 선택된 칸이면 무시
+            if (선택된칸들.includes(칸번호)) {
+                return;
             }
-          }
 
-          // Change to the image at the found position
-          const positionIndex = Math.abs(closestPosition / 110) + 1;
+            // 선택된 칸으로 표시
+            선택된칸들.push(칸번호);
+            var gridItem = document.getElementById("gridItem_" + 칸번호);
 
-          // Image loading successful
-          const newImage = new Image();
-          newImage.onload = function () {
-            // Remove animation properties
-            reel.style.animation = 'none';
-
-            // Adjust the position of the slot area and image
-            reel.style.overflow = 'block';
-
-            const reelContainer = reel.parentElement;
-            reelContainer.style.position = 'absolute';
-            reelContainer.style.bottom = '0';
-
-            // Add the image to the reel
-            reel.innerHTML = '';
-            reel.appendChild(newImage);
-
-            isSpinning = false;
-          };
-
-          newImage.onerror = function () {
-            // Image loading failed
-            console.error('이미지 로드에 실패했습니다.');
-          };
-
-          // Set the image source
-          newImage.src = images[positionIndex - 1];
-          newImage.alt = `${positionIndex}`;
-        });
-      }
+    if (!gridItem) {
+        console.error(`칸번호 ${칸번호}에 해당하는 gridItem을 찾을 수 없습니다.`);
+        return;
     }
-  </script>
+
+            var card = gridItem.querySelector('.card');
+
+            // 카드 뒤집기 애니메이션 클래스 추가
+            card.classList.add('flipped');
+
+            // 당첨 여부 확인 (5% 확률)
+            var 당첨 = 당첨숫자들.length < 3 && (Math.random() < 0.08 || (36 - 선택된칸들.length) < (3 - 당첨숫자들.length));
+
+            // 당첨 숫자 추가
+            if (당첨) {
+                당첨숫자들.push(칸번호);
+                gridItem.style.backgroundColor = "yellow";
+                gridItem.querySelector('.front').textContent = "당첨";
+                gridItem.querySelector('.back').textContent = "당첨";
+                gridItem.querySelector('.back').classList.add('winner');
+                playSound('win.mp3'); // 당첨 효과음
+            } else {
+                gridItem.style.backgroundColor = "lightgray";
+                gridItem.querySelector('.front').textContent = "꽝";
+                gridItem.querySelector('.back').textContent = "꽝";
+                gridItem.querySelector('.back').classList.add('loser');
+                playSound('lose.mp3'); // 꽝 효과음
+            }
+
+
+
+            // 당첨 숫자가 5개가 되면 더 이상 뽑기를 허용하지 않음
+            if (당첨숫자들.length === 3) {
+                document.querySelectorAll('.grid-item').forEach(function(item) {
+                    item.removeAttribute('onclick');
+                });
+            }
+        }
+
+        // 10x10 그리드 생성
+        var gridContainer = document.getElementById("gridContainer");
+        for (var i = 1; i <= 36; i++) {
+            var gridItem = document.createElement("div");
+            gridItem.id = "gridItem_" + i;
+            gridItem.className = "grid-item";
+            
+            var card = document.createElement("div");
+            card.className = "card";
+            
+            var front = document.createElement("div");
+            front.className = "front";
+            front.textContent = i; // 숫자 표시 추가
+            
+            var back = document.createElement("div");
+            back.className = "back";
+            
+            card.appendChild(front);
+            card.appendChild(back);
+            
+            gridItem.appendChild(card);
+            gridItem.setAttribute("onclick", "칸클릭(" + i + ")");
+            gridContainer.appendChild(gridItem);
+        }
+
+        // 효과음 재생 함수
+        function playSound(soundFile) {
+            var audio = new Audio(soundFile);
+            audio.play();
+        }
+    </script>
 </body>
 </html>
