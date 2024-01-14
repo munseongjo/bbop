@@ -22,6 +22,9 @@
 
     #computer-choice-container img {
       max-width: 300px;
+    border: 2px solid gray; /* 회색 테두리 추가 */
+    border-radius: 10px; /* 라운드된 모서리 추가 */
+    overflow: hidden; /* 내용이 테두리를 넘어가지 않도록 설정 */
     }
 
     #result {
@@ -49,12 +52,13 @@
 </div>
 
 <script>
+
   function play(userChoice) {
     // Play button click sound
     playSound('click.mp3');
 
     const choices = ['묵', '찌', '빠'];
-    const computerChoice = choices[Math.floor(Math.random() * 3)];
+    let computerChoice; // 변경된 부분: computerChoice를 먼저 선언
 
     // Display user choice
     const resultDiv = document.getElementById('result');
@@ -66,8 +70,9 @@
     let rotationCount = 0;
 
     const rotateImages = setInterval(() => {
-      const randomChoice = choices[Math.floor(Math.random() * 3)];
-      computerChoiceImg.src = `${randomChoice}.png`;
+      // 변경된 부분: 이미지를 회전하기 전에 computerChoice를 먼저 정함
+      computerChoice = choices[Math.floor(Math.random() * 3)];
+      computerChoiceImg.src = `${computerChoice}.png`;
 
       rotationCount++;
 
