@@ -1,267 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>뽑기 게임</title>
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Gowun Dodum', serif;
-            text-align: center;
-            margin-top: 18px;
-            background-color: transparent;
-            align-items: center;
-            justify-content: center;
-        }
-        .high {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            height: 55px;
-            width: 357px;
-            background-color: #ffbfffb8;
-            letter-spacing: -2px;
-            font-size: 22px;
-            line-height: 28px;
-            color: #3a2733;
-            opacity: 0.8;
-            border-radius: 0px;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-     
-       
-        .center-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 358px;
-            margin-top: 0px;
-        }
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(6, 57px);
-            gap: 3px;
-            align-items: center;
-            justify-content: center;
-            border-radius: 0px;
-            background: url('your.jpg');
-            background-size: cover;
-            position: relative;
-            opacity: 0.9;
-            margin-top: 0px;
-        }
-        .grid-item {
-            border: 1px solid #ddd;
-            width: 55px;
-            height: 55px;
-            font-size: 26px;
-            cursor: pointer;
-            display: flex;
-            align-items: top;
-            justify-content: center;
-            position: relative;
-            perspective: 1000px;
-            overflow: hidden;
-            opacity: 1.0;
-            word-break: keep-all;
-        }
-        .card {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease-in-out;
-            align-items: center;
-            justify-content: center;
-            background-color: transparent;
-            opacity: 1.0;
-        }
-        .card.flipped {
-            transform: rotateY(180deg);
-            opacity: 1.0;
-        }
-        .front, .back {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            backface-visibility: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 1.0;
-        }
-        .front {
-            background-color: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .back {
-            transform: rotateY(180deg);
-            color: black;
-            visibility: hidden;
-        }
-        .back.loser {
-            background-color: #2e9;
-            visibility: visible;
-        }
-        .back.winner {
-            background-color: yellow;
-            visibility: visible;
-        }
-    </style>
-</head>
-<body>
-    <div class="high">
-        <p>
-            🧡 150개 뽑기 🧡 <br> 1개:사다리(1000), 2개:역팬(125), 3개:방셀
-             </p>
-    </div>
-    <div class="center-container">
-        <div class="grid-container" id="gridContainer"></div>
-    </div>
-    <p id="result"></p>
-
-    <script>
-
-
-
-
-     
-
-
-
-//    const client_Id = ''; 
-//    const clientSecret = '';
-//    const redirectUri = '';
-
-    // 사용자가 허용한 범위(scope)
-//    const scope = '';
-
-    // 인증 서버의 URL
-//    const authorizationEndpoint = '';
-//    const tokenEndpoint = '';
-
-    // 사용자를 인증 서버로 리다이렉트
-//    window.location.href = `${authorizationEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
-
-        var 당첨숫자들 = []; // 당첨 숫자를 저장하는 배열
-        var 선택된칸들 = []; // 선택된 칸을 저장하는 배열
-  // 실시간 별풍선 갯수를 가져오는 함수
-// const getStarballoonCount = async () => {
-//    const response = await fetch(`https://cors-anywhere.herokuapp.com/https://openapi.afreecatv.com/broad/info/update`);
-//    const data = await response.json();
-//    return data.data.count;
-//};
-        // 별풍선 갯수에 따라 해당 번호의 셀을 뽑는 함수
-//      async function 별풍선으로뽑기() {
-//          const 별풍선갯수 = await getStarballoonCount();
-//         const 뽑을번호 = 별풍선갯수; // 별풍선 갯수에 해당하는 번호 뽑기
-//        await 칸클릭(뽑을번호); // 뽑기 함수 호출
-//         await sleep(1000); // 1초 쉬기
-//      }
-
-
-// 일정 시간 동안 코드 실행을 일시 정지하는 함수
-//function sleep(ms) {
-//  return new Promise(resolve => setTimeout(resolve, ms));
-//}
-//api로 별풍선 갯수 읽어오기
-//        setInterval(async function () {
-//           await 별풍선으로뽑기();
-//       }, 1000);
-// test
-//setInterval(async function () {
-//    const 별풍선갯수 = window.테스트별풍선갯수 || (await getStarballoonCount()).data.count;
-//    console.log(`별풍선 갯수: ${별풍선갯수}`);
-//    별풍선으로뽑기(별풍선갯수);
-// }, 1000);
-
-
-// 그리드 아이템 클릭 이벤트 처리
-        function 칸클릭(칸번호) {
-            // 이미 선택된 칸이면 무시
-            if (선택된칸들.includes(칸번호)) {
-                return;
-            }
-
-            // 선택된 칸으로 표시
-            선택된칸들.push(칸번호);
-            var gridItem = document.getElementById("gridItem_" + 칸번호);
-
-    if (!gridItem) {
-        console.error(`칸번호 ${칸번호}에 해당하는 gridItem을 찾을 수 없습니다.`);
-        return;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    #game-container {
+      text-align: center;
+      margin: 50px;
     }
 
-            var card = gridItem.querySelector('.card');
+    #choices-container {
+      margin-bottom: 20px;
+    }
 
-            // 카드 뒤집기 애니메이션 클래스 추가
-            card.classList.add('flipped');
+    #choices button {
+      font-size: 20px;
+      margin: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
 
-            // 당첨 여부 확인 (5% 확률)
-            var 당첨 = 당첨숫자들.length < 3 && (Math.random() < 0.08 || (36 - 선택된칸들.length) < (3 - 당첨숫자들.length));
+    #computer-choice-container img {
+      max-width: 300px;
+    }
 
-            // 당첨 숫자 추가
-            if (당첨) {
-                당첨숫자들.push(칸번호);
-                gridItem.style.backgroundColor = "yellow";
-                gridItem.querySelector('.front').textContent = "당첨";
-                gridItem.querySelector('.back').textContent = "당첨";
-                gridItem.querySelector('.back').classList.add('winner');
-                playSound('win.mp3'); // 당첨 효과음
-            } else {
-                gridItem.style.backgroundColor = "lightgray";
-                gridItem.querySelector('.front').textContent = "꽝";
-                gridItem.querySelector('.back').textContent = "꽝";
-                gridItem.querySelector('.back').classList.add('loser');
-                playSound('lose.mp3'); // 꽝 효과음
-            }
+    #result {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+  </style>
+  <title>묵찌빠 게임</title>
+</head>
+<body>
 
+<div id="game-container">
+  <div id="choices-container">
+    <div id="choices">
+      <button onclick="play('묵')">묵</button>
+      <button onclick="play('찌')">찌</button>
+      <button onclick="play('빠')">빠</button>
+    </div>
+  </div>
+  <div id="computer-choice-container">
+    <img id="computer-choice-img" src="start.gif" alt="Question Mark">
+  </div>
+  <div id="result"></div>
+</div>
 
+<script>
+  function play(userChoice) {
+    // Play button click sound
+    playSound('click.mp3');
 
-            // 당첨 숫자가 5개가 되면 더 이상 뽑기를 허용하지 않음
-            if (당첨숫자들.length === 3) {
-                document.querySelectorAll('.grid-item').forEach(function(item) {
-                    item.removeAttribute('onclick');
-                });
-            }
-        }
+    const choices = ['묵', '찌', '빠'];
+    const computerChoice = choices[Math.floor(Math.random() * 3)];
 
-        // 10x10 그리드 생성
-        var gridContainer = document.getElementById("gridContainer");
-        for (var i = 1; i <= 36; i++) {
-            var gridItem = document.createElement("div");
-            gridItem.id = "gridItem_" + i;
-            gridItem.className = "grid-item";
-            
-            var card = document.createElement("div");
-            card.className = "card";
-            
-            var front = document.createElement("div");
-            front.className = "front";
-            front.textContent = i; // 숫자 표시 추가
-            
-            var back = document.createElement("div");
-            back.className = "back";
-            
-            card.appendChild(front);
-            card.appendChild(back);
-            
-            gridItem.appendChild(card);
-            gridItem.setAttribute("onclick", "칸클릭(" + i + ")");
-            gridContainer.appendChild(gridItem);
-        }
+    // Display user choice
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = `${userChoice}을 선택!`;
 
-        // 효과음 재생 함수
-        function playSound(soundFile) {
-            var audio = new Audio(soundFile);
-            audio.play();
-        }
-    </script>
+    // Rotate computer choice images for a few seconds
+    const computerChoiceImg = document.getElementById('computer-choice-img');
+    const interval = 200; // Interval in milliseconds
+    let rotationCount = 0;
+
+    const rotateImages = setInterval(() => {
+      const randomChoice = choices[Math.floor(Math.random() * 3)];
+      computerChoiceImg.src = `${randomChoice}.png`;
+
+      rotationCount++;
+
+      if (rotationCount >= 35) {
+        clearInterval(rotateImages);
+        // Determine the winner and play corresponding sound effect
+        const result = determineWinner(userChoice, computerChoice);
+        playSound(result.sound);
+        showResult(result.message);
+      }
+    }, interval);
+  }
+
+  function determineWinner(userChoice, computerChoice) {
+    if (userChoice === computerChoice) {
+      return { sound: 'yes.mp3', message: "다시!" };
+    } else if (
+      (userChoice === '묵' && computerChoice === '빠') ||
+      (userChoice === '찌' && computerChoice === '묵') ||
+      (userChoice === '빠' && computerChoice === '찌')
+    ) {
+      return { sound: 'lose.mp3', message: `패배! 우우우우~` };
+    } else {
+      return { sound: 'win.mp3', message: `당당히 승리!` };
+    }
+  }
+
+  function showResult(resultMessage) {
+    // Display result message
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML += `<br>${resultMessage}`;
+  }
+
+  function playSound(soundFile) {
+    const audio = new Audio(soundFile);
+    audio.play();
+  }
+</script>
+
 </body>
 </html>
