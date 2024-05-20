@@ -137,15 +137,23 @@ backgroundImg.src = randomImagePath; // 이미지 로드를 시작합니다.
             ctx.closePath();
             ctx.restore();
         }
+let isDrawing = false;
 
-        canvas.addEventListener('mousemove', (event) => {
-            if (!ctx || stopDrawing) return;
-            let x1 = event.clientX - canvas.getBoundingClientRect().left;
-            let y1 = event.clientY - canvas.getBoundingClientRect().top;
-            _isInside(x1, y1);
-            _drawding(x1, y1); //마우스 위치에 그리기 호출
-        });
+canvas.addEventListener('mousedown', (event) => {
+    isDrawing = true;
+});
 
+canvas.addEventListener('mouseup', (event) => {
+    isDrawing = false;
+});
+
+canvas.addEventListener('mousemove', (event) => {
+    if (!ctx || stopDrawing) return;
+    let x1 = event.clientX - canvas.getBoundingClientRect().left;
+    let y1 = event.clientY - canvas.getBoundingClientRect().top;
+    _isInside(x1, y1);
+    if (isDrawing) _drawding(x1, y1); //마우스 위치에 그리기 호출
+});
         return {
             reDraw: (arg) => {
                 if (!inter) {
